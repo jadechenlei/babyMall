@@ -1,0 +1,145 @@
+{extend name="../Public:base" /}
+{block name="title"}基于swoole的商城{/block}
+{block name="content"}
+{include file="../Public:header" /}
+<div class="content content-nav-base  login-content">
+    <div class="main-nav">
+        <div class="inner-cont0">
+            <div class="inner-cont1 w1200">
+                <div class="inner-cont2">
+                    <a href="commodity.html" class="active">所有商品</a>
+                    <a href="buytoday.html">今日团购</a>
+                    <a href="information.html">母婴资讯</a>
+                    <a href="about.html">关于我们</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="login-bg">
+        <div class="login-cont w1200">
+            <div class="form-box">
+                <form class="layui-form" action="">
+                    <legend>手机号登录</legend>
+                    <div class="layui-form-item">
+                        <div class="layui-inline iphone">
+                            <div class="layui-input-inline">
+                                <i class="layui-icon layui-icon-cellphone iphone-icon"></i>
+                                <input type="tel" name="phone" id="phone" lay-verify="required|phone"
+                                       placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline veri-code">
+                            <div class="layui-input-inline">
+                                <input id="pnum" type="text" name="pnum" lay-verify="required" placeholder="请输入验证码"
+                                       autocomplete="off" class="layui-input">
+                                <input type="button" class="layui-btn" id="find" value="验证码"/>
+                                <input type="hidden" name="fd" value="" id="fd">
+                                <span style="color: red" id="msg">...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item login-btn">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1" onclick="return false">登录
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="/static/js/ws.js"></script>
+<script>
+    if ('WebSocket' in window) {
+        var wsServer = 'ws://13.125.71.15:9501';
+        var websocket = new WebSocket(wsServer);
+        websocket.onopen = function (evt) {
+            console.log("Connected to WebSocket server.");
+            websocket.send(JSON.stringify({
+                class: 'SmsCode',
+                action: 'getFd'
+            }));
+            $("#msg").hide();
+        };
+        websocket.onclose = function (evt) {
+            $("#fd").val('');
+            console.log("Disconnected");
+            $("#msg").show();
+        };
+        websocket.onmessage = function (evt) {
+            console.log(evt.data);
+            var res = JSON.parse(evt.data);
+            if(res.type == 'fd'){
+                $("#fd").val(res.data)
+            }else if(res.type == 'code'){
+                $("#pnum").val(res.data);
+                layer.msg("===只做演示用===<br/>验证码是由异步任务处理发送短信逻辑<br/>Websocket自动填充!!!", {
+                    icon: 1,
+                    offset: '100px',
+                    time: 5000
+                });
+            }
+        };
+        websocket.onerror = function (evt, e) {
+            console.log('Error occured: ' + evt.data);
+        };
+    }
+    else {
+        alert('当前浏览器 Not support websocket')
+    }
+</script>
+<script type="text/javascript">
+    layui.use(['form'], function () {
+        var form = layui.form;
+        $("#find").click(function () {
+            if (!/^1\d{10}$/.test($("#phone").val())) {
+                layer.msg("请输入正确的手机号");
+                return false;
+            }
+            var obj = this;
+            var sendData = {phone: $("#phone").val(),fd: $("#fd").val()};
+            request.send({
+                url: '/Index/Sign/sendCode',
+                data: sendData,
+                showSuccessMsg: false,
+                callbackAfterShow: false,
+                callback: function (data) {
+                    $("#find").addClass(" layui-btn-disabled");
+                    $('#find').attr('disabled', "true");
+                    settime(obj);
+                    $("#msg").text(data.msg);
+                }
+            });
+        });
+        var countdown = 60;
+        function settime(obj) {
+            if (countdown == 0) {
+                obj.removeAttribute("disabled");
+                obj.classList.remove("layui-btn-disabled")
+                obj.value = "获取验证码";
+                countdown = 60;
+                return;
+            } else {
+
+                obj.value = "重新发送(" + countdown + ")";
+                countdown--;
+            }
+            setTimeout(function () {
+                    settime(obj)
+                }
+                , 1000)
+        }
+
+        form.on('submit(demo1)', function(data){
+            request.send({
+                data: data.field,
+                dumpUrl : '/'
+            });
+            return false;
+        });
+    })
+</script>
+{/block}

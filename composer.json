@@ -1,0 +1,14 @@
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    },
+    "require": {
+        "ext-json": "*",
+        "easyswoole/easyswoole": "3.x",
+        "easyswoole/swoole-ide-helper": "^1.2",
+        "topthink/think-template": "^2.0",
+        "easyswoole/mysqli": "^1.1"
+    }
+}
