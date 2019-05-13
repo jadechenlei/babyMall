@@ -6,9 +6,9 @@
  * Time: 10:20
  */
 return [
-    'host' => '47.97.115.77',
+    'host' => '127.0.0.1',
     'user' => 'root',
-    'password' => 'ppf.zz123',
+    'password' => '123456',
     'port' => 3306,
     'prefix' => 'bb_',
     'pool_max_num' => 4,
