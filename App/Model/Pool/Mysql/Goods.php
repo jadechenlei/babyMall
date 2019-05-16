@@ -11,5 +11,6 @@ namespace App\Model\Pool\Mysql;
 
 class Goods extends Model
 {
-
+    protected $createTime = true;
+    protected $createTimeName = 'create_time';
 }

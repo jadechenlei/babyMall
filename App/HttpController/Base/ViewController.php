@@ -81,11 +81,11 @@ abstract class ViewController extends Controller
         } elseif (is_bool($vars)) {
             return $this->response()->write($vars ? 'TRUE' : 'FALSE');
         } elseif (is_array($vars)) {
-            return $this->response()->write(json_encode($vars, 256));
+            return $this->response()->withHeader('Content-type','text/html;charset=utf-8')->write(json_encode($vars, 256));
         } elseif (is_object($vars)) {
             return $this->response()->write('obj');
         } else {
-            return $this->response()->write($vars);
+            return $this->response()->withHeader('Content-type','text/html;charset=utf-8')->write($vars);
         }
     }
 

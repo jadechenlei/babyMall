@@ -16,6 +16,7 @@ use App\Process\HotReload;
 use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
 use EasySwoole\Component\Pool\PoolManager;
+use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
@@ -69,6 +70,17 @@ class EasySwooleEvent implements Event
             $websocketEvent->onClose($server, $fd, $reactorId);
         });
 
+        /**
+         * **************** crontab计划任务 **********************
+         */
+        $cron = Config::getInstance()->getConf('crontab');
+        if (is_array($cron) && !empty($cron)) {
+            foreach ($cron as $t) {
+                if(class_exists($t)){
+                    Crontab::getInstance()->addTask($t);
+                }
+            }
+        }
     }
 
     public static function onRequest(Request $request, Response $response): bool
