@@ -202,7 +202,7 @@ class TpORM extends DbObject
 	 * @param string $cond
 	 * @return $this|DbObject
 	 */
-	protected function where( $whereProps, $whereValue = 'DBNULL', $operator = '=', $cond = 'AND' )
+	public function where( $whereProps, $whereValue = 'DBNULL', $operator = '=', $cond = 'AND' )
 	{
 		if( !empty( $whereProps ) ){
 			if( is_array( $whereProps ) ){

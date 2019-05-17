@@ -11,19 +11,28 @@ namespace App\HttpController\Index;
 
 use App\HttpController\Base\ViewController;
 use App\Model\Pool\Mysql\Goods;
-use EasySwoole\EasySwoole\Config;
+use App\Model\Pool\Redis\IndexCache;
 
 class Index extends ViewController
 {
-    function index()
+    public function index()
     {
-        $path = Config::getInstance()->getConf('datacache.path.goods_recommend');
-        if (file_exists($path)) {
-            $goods = file_get_contents($path);
-        }else{
-            $goods = Goods::limit(20)->groupBy('title')->select();
-        }
-        $this->getView()->assign(['goods' => json_decode($goods, true)]);
+        $goods = (new IndexCache())->find();
+        $this->getView()->assign(['goods' => $goods]);
         return $this->fetch('index');
+    }
+
+    public function detail()
+    {
+        if (!isset($this->param['id'])) {
+            return $this->response()->redirect("/");
+        }
+        $goods = Goods::where('id', (int)$this->param['id'])->find();
+        /*$this->assign(['goods' => $goods]);
+
+        $recommend = (new IndexCache())->find();
+        $this->assign(['recommend' => array_splice($recommend, 0, 6)]);
+
+        return $this->fetch('detail');*/
     }
 }

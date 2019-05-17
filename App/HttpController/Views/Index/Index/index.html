@@ -2,21 +2,10 @@
 {block name="title"}基于swoole的商城{/block}
 {block name="content"}
 
-{include file="../Public:nav" /}
+{include file="../Public:top" /}
 {include file="../Public:header" /}
 <div class="content">
-    <div class="main-nav">
-        <div class="inner-cont0">
-            <div class="inner-cont1 w1200">
-                <div class="inner-cont2">
-                    <a href="commodity.html" class="active">所有商品</a>
-                    <a href="buytoday.html">今日团购</a>
-                    <a href="information.html">母婴资讯</a>
-                    <a href="about.html">关于我们</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    {include file="../Public:nav" /}
     <div class="category-con">
         <div class="category-inner-con w1200">
             <div class="category-type">
@@ -161,37 +150,8 @@
         </div>
     </div>
 
-
-    <div class="hot-recommend-con">
-        <div class="hot-con1 w1200 layui-clear">
-            <div class="item">
-                <h4>热销推荐</h4>
-                <div class="big-img">
-                    <a href="javascript:;"><img src="/static/img/hot1.png"></a>
-                </div>
-                <div class="small-img">
-                    <a href="javascript:;"><img src="/static/img/hot2.png" alt=""></a>
-                </div>
-            </div>
-            <div class="item">
-                <div class="top-img">
-                    <a href="javascript:;"><img src="/static/img/hot5.jpg"></a>
-                </div>
-                <div class="bottom-img">
-                    <a href="javascript:;"><img src="/static/img/hot6.jpg"></a>
-                    <a class="baby-cream" href="javascript:;"><img src="/static/img/hot7.jpg"></a>
-                </div>
-            </div>
-            <div class="item item1 margin0 padding0">
-                <a href="javascript:;"><img src="/static/img/hot8.jpg"></a>
-                <a href="javascript:;"><img class="btm-img" src="/static/img/hot9.jpg"></a>
-            </div>
-        </div>
-    </div>
-
-
     <div class="product-cont w1200" id="product-cont">
-        <div class="product-item product-item1 layui-clear">
+         <div class="product-item product-item1 layui-clear">
             <div class="left-title">
                 <h4><i>1F</i></h4>
                 <img src="/static/img/icon_gou.png">
@@ -250,7 +210,7 @@
             <div class="product-item-box layui-clear">
                 {foreach $goods as $v}
                 <div class="list-item">
-                    <a href="javascript:;"><img src="/static/img/goods/{$v.img}" style="width: 160px;height: 160px" onerror="this.src='/static/img/more1.jpg'"></a>
+                    <a href="/index/Index/detail?id={$v.id}"><img src="/static/img/goods/{$v.img}" style="width: 160px;height: 160px" onerror="this.src='/static/img/more1.jpg'"></a>
                     <p style="height: 40px;overflow: hidden">{$v.title}{$v.sub_title}</p>
                     <span>￥{$v.price}</span>
                 </div>

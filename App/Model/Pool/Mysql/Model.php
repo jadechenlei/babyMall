@@ -36,8 +36,7 @@ class Model extends TpORM
             parent::__construct($data);
             $this->setDb($db);
         } else {
-            // todo log
-            return null;
+            throw new \Exception('Mysql Pool is error');
         }
     }
 
@@ -55,7 +54,7 @@ class Model extends TpORM
      * @param null $data
      * @return bool|int
      */
-    protected function add($data = null)
+    public function add($data = null)
     {
         try {
             if ($this->createTime === true) {

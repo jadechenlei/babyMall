@@ -1,0 +1,102 @@
+{extend name="../Public:base" /}
+{block name="title"}基于swoole的商城{/block}
+{block name="content"}
+
+{include file="../Public:top" /}
+{include file="../Public:header" /}
+<div class="content content-nav-base datails-content">
+    {include file="../Public:nav" /}
+    <div class="data-cont-wrap w1200">
+        <div class="crumb">
+            <a href="javascript:;">首页</a>
+            <span>></span>
+            <a href="javascript:;">所有商品</a>
+            <span>></span>
+            <a href="javascript:;">产品详情</a>
+        </div>
+        <div class="product-intro layui-clear">
+            <div class="preview-wrap">
+                <a href="javascript:;"><img src="/static/img/goods/{$goods.img}" style="width: 400px;height: 400px"></a>
+            </div>
+            <div class="itemInfo-wrap">
+                <div class="itemInfo">
+                    <div class="title">
+                        <h4 style="text-overflow:ellipsis;overflow:hidden;width: 690px;white-space:nowrap;">
+                            {$goods.title} {$goods.sub_title}</h4>
+                        <span><i class="layui-icon layui-icon-rate-solid"></i>收藏</span>
+                    </div>
+                    <div class="summary">
+                        <p class="reference"><span>参考价</span>
+                            <del>￥{$goods.price*1.2}</del>
+                        </p>
+                        <p class="activity"><span>活动价</span><strong class="price"><i>￥</i>{$goods.price}</strong></p>
+                        <p class="address-box"><span>送&nbsp;&nbsp;&nbsp;&nbsp;至</span><strong class="address">江西&nbsp;&nbsp;南昌&nbsp;&nbsp;东湖区</strong>
+                        </p>
+                    </div>
+                    <div class="choose-attrs">
+                        <div class="color layui-clear"><span class="title">颜&nbsp;&nbsp;&nbsp;&nbsp;色</span>
+                            <div class="color-cont"><span class="btn">白色</span> <span class="btn active">粉丝</span></div>
+                        </div>
+                        <div class="number layui-clear"><span class="title">数&nbsp;&nbsp;&nbsp;&nbsp;量</span>
+                            <div class="number-cont"><span class="cut btn">-</span><input
+                                    onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                    onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                    maxlength="4" type="" name="num" value="1"><span class="add btn">+</span></div>
+                        </div>
+                    </div>
+                    <div class="choose-btns">
+                        <input type="hidden" name="goods_id" value="{$goods.id}" id="goods_id">
+                        <button class="layui-btn layui-btn-primary purchase-btn">立刻购买</button>
+                        <button class="layui-btn  layui-btn-danger car-btn"><i
+                                class="layui-icon layui-icon-cart-simple"></i>加入购物车
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-clear">
+            <div class="aside">
+                <h4>热销推荐</h4>
+                <div class="item-list">
+                    {volist name="recommend" id="v"}
+                    <div class="item">
+                        <img src="/static/img/goods/{$v.img}" style="width: 280px;height: 280px">
+                        <p><span>{$v.title}</span><span class="pric">￥{$v.price}</span></p>
+                    </div>
+                    {/volist}
+                </div>
+            </div>
+            <div class="detail">
+                <h4>详情</h4>
+                <div class="item">
+                    <img src="/static/img/details_imgbig.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    layui.use(['mm', 'jquery'], function () {
+        var mm = layui.mm, $ = layui.$;
+        var cur = $('.number-cont input').val();
+        $('.number-cont .btn').on('click', function () {
+            if ($(this).hasClass('add')) {
+                cur++;
+            } else {
+                if (cur > 1) {
+                    cur--;
+                }
+            }
+            $('.number-cont input').val(cur)
+        })
+        $(".car-btn").click(function () {
+            request.send({
+                url: '/index/cart/add',
+                data: {goods_id: $('#goods_id').val(), num: $('.number-cont input').val()}
+            })
+        })
+    });
+</script>
+{/block}

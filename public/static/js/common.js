@@ -51,7 +51,13 @@ var request = {
                         request.successDone(config.dumpUrl, config.callback, data.result.data)
                     }
                 } else {
-                    layer.msg(data.msg, {icon: 5, anim: 6});
+                    if(data.msg == 'login'){
+                        layer.msg('请先登录', {icon: 5, anim: 6, time: 1000},function () {
+                            window.location.href = '/index/sign/login'
+                        });
+                    }else{
+                        layer.msg(data.msg, {icon: 5, anim: 6});
+                    }
                 }
             }
         })

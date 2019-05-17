@@ -18,13 +18,14 @@ class Redis
 {
     public $redis;
 
-    public function __construct()
+    public function __construct($dbindex = 0)
     {
         $timeout = Config::getInstance()->getConf('redis.pool_time_out');
         $redisObject = PoolManager::getInstance()->getPool(RedisPool::class)->getObj($timeout);
         // 类型的判定
         if ($redisObject instanceof RedisObject) {
             $this->redis = $redisObject;
+            $this->redis->select($dbindex);
         } else {
             throw new \Exception('Redis Pool is error');
         }

@@ -17,6 +17,9 @@ use think\Template;
 abstract class ViewController extends Controller
 {
     private $view;
+    protected $param;
+    protected $user = [];
+    protected $userId = '';
 
     /**
      * 初始化模板引擎
@@ -71,7 +74,12 @@ abstract class ViewController extends Controller
             'cache_path' => "{$tempPath}/templates_c/",               # 模板编译目录
         ]);
 
-//        var_dump(EASYSWOOLE_ROOT . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $controller_path);
+        //var_dump(EASYSWOOLE_ROOT . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $controller_path);
+    }
+
+    public function assign(array $vars = [])
+    {
+        $this->getView()->assign($vars);
     }
 
     protected function dump($vars)
@@ -81,11 +89,12 @@ abstract class ViewController extends Controller
         } elseif (is_bool($vars)) {
             return $this->response()->write($vars ? 'TRUE' : 'FALSE');
         } elseif (is_array($vars)) {
-            return $this->response()->withHeader('Content-type','text/html;charset=utf-8')->write(json_encode($vars, 256));
+            return $this->response()->withHeader('Content-type', 'text/html;charset=utf-8')->write(json_encode($vars,
+                256));
         } elseif (is_object($vars)) {
             return $this->response()->write('obj');
         } else {
-            return $this->response()->withHeader('Content-type','text/html;charset=utf-8')->write($vars);
+            return $this->response()->withHeader('Content-type', 'text/html;charset=utf-8')->write($vars);
         }
     }
 
@@ -109,8 +118,11 @@ abstract class ViewController extends Controller
     public function onRequest($action): ?bool
     {
         $this->session(new SessionHandler())->start();
-        $user = $this->session()->get('user');
-        $this->view->assign(['user' => $user ?: []]);
+        $user = $this->session()->get('user') ?: [];
+        $this->view->assign(['user' => $user]);
+        $this->user = $user;
+        $this->userId = $user['phone'] ?? '';
+        $this->param = $this->request()->getRequestParam();
         return true;
         $module = 'Index\Index';
         $controller = 'Sign';
