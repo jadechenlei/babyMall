@@ -1,6 +1,6 @@
 ## 基于ngnix_swoole的分布式电商系统 [http://www.questionfans.com](http://www.questionfans.com "http://www.questionfans.com")
 
-###服务器环境
+### 服务器环境
 - 1核1G + 30G硬盘 * 2台韩国区域服务器
 - centos7.6 + php7.2.18 + swoole4.4 + easyswoole3.2.1
 
