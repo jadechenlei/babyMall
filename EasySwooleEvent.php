@@ -28,13 +28,20 @@ class EasySwooleEvent implements Event
 
     public static function initialize()
     {
-        // TODO: Implement initialize() method.
         date_default_timezone_set('Asia/Shanghai');
+        // 加载配置项
         (new LoadConf())->run();
+
         // 注册redis连接池
-        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('redis.pool_max_num'));
+        $max = Config::getInstance()->getConf('database.pool_max_num');
+        $min = Config::getInstance()->getConf('database.pool_min_num');
+        $redisConf = PoolManager::getInstance()->register(RedisPool::class, $max);
+        $redisConf->setMaxObjectNum($max)->setMinObjectNum($min);
+
         // 注册mysql连接池
-        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('mysql.pool_max_num'));
+        $mysqlConf = PoolManager::getInstance()->register(MysqlPool::class, $max);
+        $mysqlConf->setMaxObjectNum($max)->setMinObjectNum($min);
+
     }
 
     /**
@@ -58,17 +65,20 @@ class EasySwooleEvent implements Event
         // 创建 Dispatcher 对象 并注入 config 对象
         $dispatch = new Dispatcher($conf);
         // 给server 注册相关事件 在 WebSocket 模式下  message 事件必须注册 并且交给 Dispatcher 对象处理
-        $register->set(EventRegister::onMessage, function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) use ($dispatch) {
-            $dispatch->dispatch($server, $frame->data, $frame);
-        });
+        $register->set(EventRegister::onMessage,
+            function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) use ($dispatch) {
+                $dispatch->dispatch($server, $frame->data, $frame);
+            });
         //自定义握手
         $websocketEvent = new WebSocketEvent();
-        $register->set(EventRegister::onHandShake, function (\swoole_http_request $request, \swoole_http_response $response) use ($websocketEvent) {
-            $websocketEvent->onHandShake($request, $response);
-        });
-        $register->set(EventRegister::onClose, function (\swoole_server $server, int $fd, int $reactorId) use ($websocketEvent) {
-            $websocketEvent->onClose($server, $fd, $reactorId);
-        });
+        $register->set(EventRegister::onHandShake,
+            function (\swoole_http_request $request, \swoole_http_response $response) use ($websocketEvent) {
+                $websocketEvent->onHandShake($request, $response);
+            });
+        $register->set(EventRegister::onClose,
+            function (\swoole_server $server, int $fd, int $reactorId) use ($websocketEvent) {
+                $websocketEvent->onClose($server, $fd, $reactorId);
+            });
 
         /**
          * **************** crontab计划任务 **********************
@@ -76,7 +86,7 @@ class EasySwooleEvent implements Event
         $cron = Config::getInstance()->getConf('crontab');
         if (is_array($cron) && !empty($cron)) {
             foreach ($cron as $t) {
-                if(class_exists($t)){
+                if (class_exists($t)) {
                     Crontab::getInstance()->addTask($t);
                 }
             }

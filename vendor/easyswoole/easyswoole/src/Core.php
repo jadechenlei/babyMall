@@ -70,6 +70,7 @@ class Core
         defined('EASYSWOOLE_SERVER') or define('EASYSWOOLE_SERVER',1);
         defined('EASYSWOOLE_WEB_SERVER') or define('EASYSWOOLE_WEB_SERVER',2);
         defined('EASYSWOOLE_WEB_SOCKET_SERVER') or define('EASYSWOOLE_WEB_SOCKET_SERVER',3);
+        defined('EASYSWOOLE_REDIS_SERVER') or define('EASYSWOOLE_REDIS_SERVER',4);
     }
 
     function setIsDev(bool $isDev)
@@ -223,7 +224,7 @@ class Core
         /*
          * 注册默认回调
          */
-        if($serverType !== EASYSWOOLE_SERVER){
+        if(in_array($serverType,[EASYSWOOLE_WEB_SERVER,EASYSWOOLE_WEB_SOCKET_SERVER],true)){
             $namespace = Di::getInstance()->get(SysConst::HTTP_CONTROLLER_NAMESPACE);
             if(empty($namespace)){
                 $namespace = 'App\\HttpController\\';
@@ -307,7 +308,10 @@ class Core
                 }
             }
             finish :{
-                $task->finish($finishData);
+                //禁止 process执行回调
+                if(($server->setting['worker_num'] + $server->setting['task_worker_num']) > $task->worker_id){
+                    $task->finish($finishData);
+                }
             }
         });
 
@@ -342,8 +346,6 @@ class Core
 
     private function extraHandler()
     {
-        $serverName = Config::getInstance()->getConf('SERVER_NAME');
-
         //注册Console
         if(Config::getInstance()->getConf('CONSOLE.ENABLE')){
             $config = Config::getInstance()->getConf('CONSOLE');
@@ -356,8 +358,8 @@ class Core
                 ]);
             });
             ConsoleModuleContainer::getInstance()->set(new Auth());
-            ConsoleModuleContainer ::getInstance()->set(new Server());
-            ConsoleModuleContainer ::getInstance()->set(new Log());
+            ConsoleModuleContainer::getInstance()->set(new Server());
+            ConsoleModuleContainer::getInstance()->set(new Log());
         }
         //注册crontab进程
         Crontab::getInstance()->__run();

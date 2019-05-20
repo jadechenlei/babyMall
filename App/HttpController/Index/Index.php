@@ -27,7 +27,8 @@ class Index extends ViewController
         if (!isset($this->param['id'])) {
             return $this->response()->redirect("/");
         }
-        $goods = Goods::where('id', (int)$this->param['id'])->find();
+        $goods = Goods::where( ['id' => ['=', 5]] )->select();
+        $goods = Goods::limit(20)->groupBy('title')->orderBy('RAND()')->select() ?: [];
         /*$this->assign(['goods' => $goods]);
 
         $recommend = (new IndexCache())->find();
