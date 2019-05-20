@@ -10,17 +10,21 @@ namespace EasySwoole\EasySwoole;
 
 
 use App\Bin\LoadConf;
+use App\Lib\Redis;
 use App\Pool\MysqlPool;
 use App\Pool\RedisPool;
 use App\Process\HotReload;
+use App\Process\OrderStatus;
 use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
+use EasySwoole\Component\Di;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
+use EasySwoole\Mysqli\Mysqli;
 use EasySwoole\Socket\Dispatcher;
 
 class EasySwooleEvent implements Event
@@ -50,8 +54,14 @@ class EasySwooleEvent implements Event
      */
     public static function mainServerCreate(EventRegister $register)
     {
+        #注册非连接池的数据库链接,用于脚本等一些情况
+        $conf = new \EasySwoole\Mysqli\Config(Config::getInstance()->getConf('database'));
+        Di::getInstance()->set('MYSQL',new Mysqli($conf));
+        Di::getInstance()->set('REDIS', Redis::getInstance());
+
         $swooleServer = ServerManager::getInstance()->getSwooleServer();
         $swooleServer->addProcess((new HotReload('HotReload', ['disableInotify' => false]))->getProcess());
+        $swooleServer->addProcess((new OrderStatus('OrderStatus'))->getProcess());
 
         /**
          * **************** websocket控制器 **********************

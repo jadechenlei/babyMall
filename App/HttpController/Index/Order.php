@@ -13,6 +13,7 @@ use App\HttpController\Base\needLogin;
 use App\Model\Pool\Mysql\Order as OrderModel;
 use App\Model\Pool\Redis\Cart as CartRedis;
 use App\Model\Pool\Redis\OrderNum;
+use App\Model\Pool\Redis\OrderStatus;
 
 class Order extends needLogin
 {
@@ -23,6 +24,8 @@ class Order extends needLogin
         if (empty($ids)) {
             return $this->errorReturn('没有商品信息');
         }
+        $orderModel = new OrderModel;
+        $orderStatus = new OrderStatus();
         foreach ($ids as $id) {
             $num = $CartRedis->getGoodsNum($this->userId, $id);
             $sort = (new OrderNum())->incr();
@@ -34,12 +37,13 @@ class Order extends needLogin
                 'num' => $num,
                 'total' => 100
             ];
-            try{
-                $res = OrderModel::add($data);
-            }catch (\Exception $e){
-                print_r($e);
+            $res = $orderModel->add($data);
+            if ($res) {
+                $orderStatus->zadd($res, time());
+            } else {
+                return $this->errorReturn('数据库添加失败');
             }
-            return $this->successReturn('下单成功,1分钟后订单将自动取消', [$res]);
         }
+        return $this->successReturn('下单成功,1分钟后订单将自动取消');
     }
 }

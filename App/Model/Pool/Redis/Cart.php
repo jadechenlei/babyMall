@@ -41,6 +41,9 @@ class Cart
 
     public function add($userId, $goodId, $num = 1)
     {
+        if (!$userId || !$goodId || !$num) {
+            return false;
+        }
         if (!$this->goodsExist($userId, $goodId)) {
             return $this->redis->hSet($userId, $goodId, $num);
         } else {

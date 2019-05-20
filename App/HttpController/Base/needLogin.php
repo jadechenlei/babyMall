@@ -9,6 +9,8 @@
 namespace App\HttpController\Base;
 
 
+use App\Model\Pool\Redis\Cart;
+
 class needLogin extends ViewController
 {
     public function onRequest($action): ?bool
@@ -21,6 +23,7 @@ class needLogin extends ViewController
                     $this->response()->redirect("/index/sign/login");
                 }
             } else {
+                $this->assign(['cartTotal' => (new Cart())->getTotal($this->userId)]);
                 return true;
             }
         }
