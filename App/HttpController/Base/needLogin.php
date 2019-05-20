@@ -16,9 +16,9 @@ class needLogin extends ViewController
         if (parent::onRequest($action)) {
             if (!$this->session()->get('user')) {
                 if ($this->isAjax()) {
-                    return $this->errorReturn('login');
+                    $this->errorReturn('login');
                 } else {
-                    return $this->response()->redirect("/index/sign/login");
+                    $this->response()->redirect("/index/sign/login");
                 }
             } else {
                 return true;

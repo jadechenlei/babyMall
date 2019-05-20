@@ -12,6 +12,7 @@ namespace App\HttpController\Index;
 use App\HttpController\Base\needLogin;
 use App\Model\Pool\Mysql\Order as OrderModel;
 use App\Model\Pool\Redis\Cart as CartRedis;
+use App\Model\Pool\Redis\OrderNum;
 
 class Order extends needLogin
 {
@@ -24,15 +25,21 @@ class Order extends needLogin
         }
         foreach ($ids as $id) {
             $num = $CartRedis->getGoodsNum($this->userId, $id);
+            $sort = (new OrderNum())->incr();
             $data = [
-                //'order_no' => \EasySwoole\Utility\SnowFlake::make(1, 1),
+                'sort' => $sort,
+                'order_no' => \EasySwoole\Utility\SnowFlake::make($sort, 1),
                 'user_id' => $this->userId,
                 'goods_id' => (int)$id,
                 'num' => $num,
                 'total' => 100
             ];
-            $res = OrderModel::add($data);
-            return $this->successReturn('下单成功,1分钟后订单将自动取消',[$res]);
+            try{
+                $res = OrderModel::add($data);
+            }catch (\Exception $e){
+                print_r($e);
+            }
+            return $this->successReturn('下单成功,1分钟后订单将自动取消', [$res]);
         }
     }
 }

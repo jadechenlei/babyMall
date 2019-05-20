@@ -27,13 +27,15 @@ class Index extends ViewController
         if (!isset($this->param['id'])) {
             return $this->response()->redirect("/");
         }
-        $goods = Goods::where( ['id' => ['=', 5]] )->select();
-        $goods = Goods::limit(20)->groupBy('title')->orderBy('RAND()')->select() ?: [];
-        /*$this->assign(['goods' => $goods]);
+        $goods = Goods::where('id', $this->param['id'])->find();
+        if(!$goods){
+            return $this->response()->redirect("/");
+        }
+        $this->assign(['goods' => $goods]);
 
         $recommend = (new IndexCache())->find();
         $this->assign(['recommend' => array_splice($recommend, 0, 6)]);
 
-        return $this->fetch('detail');*/
+        return $this->fetch('detail');
     }
 }
