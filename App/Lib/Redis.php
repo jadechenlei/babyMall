@@ -29,7 +29,6 @@ class Redis
             $this->redis = new \Redis();
             $result = $this->redis->connect($redisConfig['host'], $redisConfig['port']);
             $this->redis->auth($redisConfig['auth']);
-            print_r($result);
         } catch (\Exception $e) {
             throw new \Exception("redis服务异常");
         }

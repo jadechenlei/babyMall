@@ -1,0 +1,102 @@
+{extend name="../Public:base" /}
+{block name="title"}基于swoole的商城{/block}
+{block name="style"}
+<style>
+    .shopcart-content .banner-bg p{color: black}
+    .shopcart-content .order-content .th-item{left: -50px}
+    .order-no{margin: -20px 0 20px 43px;color: red}
+    .shopcart-content .th-time{width: 125px}
+</style>
+{/block}
+{block name="content"}
+
+{include file="../Public:top" /}
+{include file="../Public:header" /}
+<div class="content content-nav-base shopcart-content">
+    {include file="../Public:nav" /}
+    <div class="banner-bg w1200">
+        <h3>订单列表</h3>
+        <p>您所有的未支付订单都将在1分钟后自动取消（基于redis的有序集合+swoole的毫秒定时器），厉害了吧</p>
+    </div>
+    <div class="cart w1200">
+        <div class="cart-table-th">
+            <div class="th th-item">
+                <div class="th-inner">
+                    商品
+                </div>
+            </div>
+            <div class="th th-price">
+                <div class="th-inner">
+                    单价
+                </div>
+            </div>
+            <div class="th th-amount">
+                <div class="th-inner">
+                    数量
+                </div>
+            </div>
+            <div class="th th-sum">
+                <div class="th-inner">
+                    小计
+                </div>
+            </div>
+            <div class="th th-time">
+                <div class="th-inner">
+                    下单时间
+                </div>
+            </div>
+            <div class="th th-op">
+                <div class="th-inner">
+                    状态
+                </div>
+            </div>
+        </div>
+        <div class="OrderList">
+            <div class="order-content" id="list-cont">
+                {foreach $order as $v}
+                <ul class="item-content layui-clear">
+                    <p class="order-no">订单号：{$v.order_no}</p>
+                    <li class="th th-item">
+                        <div class="item-cont">
+                            <a href="/index/Index/detail?id={$v.id}"><img src="/static/img/goods/{$v.img}" alt=""></a>
+                            <div class="text">
+                                <div class="title">{$v.title}</div>
+                                <p><span>{$v.sub_title}</span></p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="th th-price">
+                        <span class="th-su">{$v.price}</span>
+                    </li>
+                    <li class="th th-amount">
+                        <div class="box-btn layui-clear">
+                            <input class="Quantity-input" type="" name="" value="{$v.num}" disabled="disabled">
+                        </div>
+                    </li>
+                    <li class="th th-sum">
+                        <span class="sum">{$v.price * $v.num}</span>
+                    </li>
+                    <li class="th th-time">
+                        <span class="sum">{:date('Y-m-d H:i:s',$v.create_time)}</span>
+                    </li>
+                    <li class="th th-op">
+                        {switch v.status }
+                        {case 3 }已取消<br/>{:date('Y-m-d H:i:s',$v.cancel_time)}{/case}
+                        {case 2}已付款{/case}
+                        {default /}待付款
+                        {/switch}
+                    </li>
+                </ul>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+
+</script>
+{/block}
+</body>
+</html>

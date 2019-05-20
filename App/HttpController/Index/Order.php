@@ -17,6 +17,18 @@ use App\Model\Pool\Redis\OrderStatus;
 
 class Order extends needLogin
 {
+    public function index()
+    {
+        $order = OrderModel::join('goods', 'order.goods_id = goods.id')
+            ->where('user_id', $this->userId)
+            ->field('order_no,num,title,sub_title,price,img,order.create_time,order.status,order.cancel_time')
+            ->order('order.create_time')
+            ->limit(20)
+            ->select();
+        $this->assign(['order' => $order]);
+        return $this->fetch('index');
+    }
+
     public function add()
     {
         $CartRedis = new CartRedis();
