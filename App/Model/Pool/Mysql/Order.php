@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 <?php
 /**
- * Created by wwwscm.com
+ * 订单模型类
  * Author: chenlei
  * Date: 2019/5/17
  * Time: 17:36
@@ -19,26 +18,4 @@ class Order extends Model
     {
         return self::where(['id' => ['in' => $ids], 'status' => 1])->edit(['status' => 3, 'cancel_time' => time()]);
     }
-=======
-<?php
-/**
- * Created by wwwscm.com
- * Author: chenlei
- * Date: 2019/5/17
- * Time: 17:36
- */
-
-namespace App\Model\Pool\Mysql;
-
-
-class Order extends Model
-{
-    protected $createTime = true;
-    protected $createTimeName = 'create_time';
-
-    public function cancelOrder(array $ids)
-    {
-        return self::where(['id' => ['in' => $ids], 'status' => 1])->edit(['status' => 3, 'cancel_time' => time()]);
-    }
->>>>>>> ec4301511d7901bb04475b5f212d3ea2f96b3d3f
 }
