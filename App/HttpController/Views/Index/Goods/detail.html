@@ -96,6 +96,13 @@
                 url: '/index/cart/add',
                 data: {goods_id: $('#goods_id').val(), num: $('.number-cont input').val()}
             })
+        });
+        $(".purchase-btn").click(function () {
+            request.send({
+                url: '/index/order/add',
+                data: {goods_id: $('#goods_id').val(), num: $('.number-cont input').val()},
+                dumpUrl: '/inder/order/index'
+            })
         })
     });
 </script>

@@ -9,6 +9,7 @@
 namespace App\HttpController\Base;
 
 
+use App\Model\Pool\Redis\Cart;
 use EasySwoole\EasySwoole\Config;
 use EasySwoole\Http\AbstractInterface\Controller;
 use EasySwoole\Http\Session\SessionHandler;
@@ -123,6 +124,11 @@ abstract class ViewController extends Controller
         $this->user = $user;
         $this->userId = $user['phone'] ?? '';
         $this->param = $this->request()->getRequestParam();
+        $cartNum = 0;
+        if ($this->userId) {
+            $cartNum = (new Cart())->getTotal($this->userId);
+        }
+        $this->assign(['cartTotal' => $cartNum]);
         return true;
         $module = 'Index\Index';
         $controller = 'Sign';

@@ -210,7 +210,7 @@
             <div class="product-item-box layui-clear">
                 {foreach $goods as $v}
                 <div class="list-item">
-                    <a href="/index/Index/detail?id={$v.id}"><img src="/static/img/goods/{$v.img}" style="width: 160px;height: 160px" onerror="this.src='/static/img/more1.jpg'"></a>
+                    <a href="/index/goods/detail?id={$v.id}"><img src="/static/img/goods/{$v.img}" style="width: 160px;height: 160px" onerror="this.src='/static/img/more1.jpg'"></a>
                     <p style="height: 40px;overflow: hidden">{$v.title}{$v.sub_title}</p>
                     <span>￥{$v.price}</span>
                 </div>

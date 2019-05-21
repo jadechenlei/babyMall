@@ -51,10 +51,11 @@ class Model extends TpORM
     }
 
     /**
+     *
      * @param null $data
      * @return bool|int
      */
-    public function add($data = null)
+    protected function add($data = null)
     {
         try {
             if ($this->createTime === true) {

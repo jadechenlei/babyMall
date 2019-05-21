@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by wwwscm.com
+ * 订单表自增ID
  * Author: chenlei
  * Date: 2019/5/20
  * Time: 11:22

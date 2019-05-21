@@ -9,6 +9,8 @@
 namespace App\HttpController\Base;
 
 
+use App\Model\Pool\Redis\Cart;
+
 class needLogin extends ViewController
 {
     public function onRequest($action): ?bool

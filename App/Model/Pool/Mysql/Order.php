@@ -11,6 +11,11 @@ namespace App\Model\Pool\Mysql;
 
 class Order extends Model
 {
-    //protected $createTime = true;
-    ////rotected $createTimeName = 'create_time';
+    protected $createTime = true;
+    protected $createTimeName = 'create_time';
+
+    public function cancelOrder(array $ids)
+    {
+        return self::where(['id' => ['in' => $ids], 'status' => 1])->edit(['status' => 3, 'cancel_time' => time()]);
+    }
 }

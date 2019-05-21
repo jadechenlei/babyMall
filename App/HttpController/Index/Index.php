@@ -21,21 +21,4 @@ class Index extends ViewController
         $this->getView()->assign(['goods' => $goods]);
         return $this->fetch('index');
     }
-
-    public function detail()
-    {
-        if (!isset($this->param['id'])) {
-            return $this->response()->redirect("/");
-        }
-        $goods = Goods::where('id', $this->param['id'])->find();
-        if(!$goods){
-            return $this->response()->redirect("/");
-        }
-        $this->assign(['goods' => $goods]);
-
-        $recommend = (new IndexCache())->find();
-        $this->assign(['recommend' => array_splice($recommend, 0, 6)]);
-
-        return $this->fetch('detail');
-    }
 }

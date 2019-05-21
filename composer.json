@@ -9,6 +9,7 @@
         "easyswoole/easyswoole": "3.x",
         "easyswoole/swoole-ide-helper": "^1.2",
         "topthink/think-template": "^2.0",
-        "easyswoole/mysqli": "^1.1"
+        "easyswoole/mysqli": "^1.1",
+        "qiniu/php-sdk": "^7.2"
     }
 }
