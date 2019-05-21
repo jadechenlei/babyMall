@@ -30,6 +30,7 @@ class Test extends ViewController
 
         return $this->dump($ids);
     }
+<<<<<<< HEAD
 
     public function down()
     {
@@ -69,4 +70,6 @@ class Test extends ViewController
         $s = file_put_contents('./public/static/img/goods/' . $name, $img);
         return $name;
     }
+=======
+>>>>>>> ec4301511d7901bb04475b5f212d3ea2f96b3d3f
 }
