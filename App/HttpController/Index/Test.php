@@ -13,6 +13,8 @@ use App\HttpController\Base\ViewController;
 use App\Model\Pool\Redis\OrderStatus;
 use EasySwoole\Component\Di;
 use EasySwoole\Mysqli\Mysqli;
+use Qiniu\Auth;
+use Qiniu\Storage\BucketManager;
 
 class Test extends ViewController
 {
@@ -33,7 +35,7 @@ class Test extends ViewController
 
     public function down()
     {
-        $file = file_get_contents(EASYSWOOLE_ROOT . '/public/data/zhiniaoku.csv');
+        $file = file_get_contents(EASYSWOOLE_ROOT . '/public/data/yunfuzhuang.csv');
         $data = explode(PHP_EOL, $file);
         foreach ($data as $v) {
             go(function () use ($v) {
@@ -46,7 +48,7 @@ class Test extends ViewController
                         'price' => $vv[2],
                         'img' => $vv[1],
                         'ori' => $vv[1],
-                        'cat_id' => 2
+                        'cat_id' => 8
                     ];
                     #需注意mysql最大连接数， 默认最大连接数为100
                     $conf = new \EasySwoole\Mysqli\Config(\EasySwoole\EasySwoole\Config::getInstance()->getConf('database'));
@@ -59,14 +61,48 @@ class Test extends ViewController
 
     }
 
-    private function downImg($url)
+    public function downImg()
     {
-        ob_start(); //打开输出
-        readfile($url); //输出图片文件
-        $img = ob_get_contents(); //得到浏览器输出
-        ob_end_clean(); //清除输出并关闭
-        $name = \EasySwoole\Utility\Random::character(8) . '.jpg';
-        $s = file_put_contents('./public/static/img/goods/' . $name, $img);
-        return $name;
+        $db = new \App\Model\Pool\Mysql\Goods();
+        $data = $db->field('id,ori')->limit([1000, 4000])->select();
+        foreach ($data as $v) {
+            go(function () use ($v) {
+                $accessKey = 'RicQtT4XSgAHwYDJRYjOnoOum37mzlg3HAUDSEkA';
+                $secretKey = '29S_-Wgu7iAVfEFAEpgQTNApn2cJzkrsco0FFlvG';
+                $bucket = 'qs';
+
+                $auth = new Auth($accessKey, $secretKey);
+                $bucketManager = new BucketManager($auth);
+
+                $key = \EasySwoole\Utility\Random::character(8) . '.jpg';
+
+                // 指定抓取的文件保存名称#curl协程是不支持协程,可使用swoole的异步客户端来解决
+                $bucketManager->fetch($v['ori'], $bucket, $key);
+
+                $conf = new \EasySwoole\Mysqli\Config(\EasySwoole\EasySwoole\Config::getInstance()->getConf('database'));
+                $db2 = new Mysqli($conf);
+                $img = 'http://cdn.static.questionfans.com/' . $key;
+                $res = $db2->where('id', $v['id'])->update('bb_goods',['img' => $img]);
+                #释放链接很重要
+                $db2->resetDbStatus();
+                //echo $res .$v['id']. "\n";
+            });
+        }
+    }
+
+    public function qiniu($url)
+    {
+        $accessKey = 'RicQtT4XSgAHwYDJRYjOnoOum37mzlg3HAUDSEkA';
+        $secretKey = '29S_-Wgu7iAVfEFAEpgQTNApn2cJzkrsco0FFlvG';
+        $bucket = 'qs';
+
+        $auth = new Auth($accessKey, $secretKey);
+        $bucketManager = new BucketManager($auth);
+
+        $key = \EasySwoole\Utility\Random::character(8) . '.jpg';
+
+        // 指定抓取的文件保存名称
+        list($ret, $err) = $bucketManager->fetch($url, $bucket, $key);
+        return $key;
     }
 }

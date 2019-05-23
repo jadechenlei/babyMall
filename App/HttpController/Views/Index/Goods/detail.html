@@ -16,7 +16,7 @@
         </div>
         <div class="product-intro layui-clear">
             <div class="preview-wrap">
-                <a href="javascript:;"><img src="/static/img/goods/{$goods.img}" style="width: 400px;height: 400px"></a>
+                <a href="javascript:;"><img src="{$goods.img}" style="width: 400px;height: 400px"></a>
             </div>
             <div class="itemInfo-wrap">
                 <div class="itemInfo">
@@ -58,18 +58,20 @@
             <div class="aside">
                 <h4>热销推荐</h4>
                 <div class="item-list">
-                    {volist name="recommend" id="v"}
+                    {foreach $recommend.recommend as $k=>$v}
+                    {if $k < 6}
                     <div class="item">
-                        <img src="/static/img/goods/{$v.img}" style="width: 280px;height: 280px">
+                        <img src="{$v.img}" style="width: 280px;height: 280px">
                         <p><span>{$v.title}</span><span class="pric">￥{$v.price}</span></p>
                     </div>
-                    {/volist}
+                    {/if}
+                    {/foreach}
                 </div>
             </div>
             <div class="detail">
                 <h4>详情</h4>
                 <div class="item">
-                    <img src="/static/img/details_imgbig.jpg">
+                    <img src="//cdn.static.questionfans.com/img/details_imgbig.jpg">
                 </div>
             </div>
         </div>

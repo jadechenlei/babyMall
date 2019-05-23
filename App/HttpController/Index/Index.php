@@ -18,6 +18,7 @@ class Index extends ViewController
     public function index()
     {
         $goods = (new IndexCache())->find();
+        //return $this->dump($goods);
         $this->getView()->assign(['goods' => $goods]);
         return $this->fetch('index');
     }

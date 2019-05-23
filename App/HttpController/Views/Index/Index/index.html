@@ -16,42 +16,42 @@
                     <ul class="normal-nav layui-clear">
                         <li class="nav-item">
                             <div class="title">奶粉辅食</div>
-                            <p><a href="#">奶粉</a><a href="#">捕食</a><a href="#">营养品</a></p>
+                            <p><a href="/index/goods/detail?id=1">奶粉</a><a href="/index/goods/detail?id=2">捕食</a><a href="/index/goods/detail?id=3">营养品</a></p>
                             <i class="layui-icon layui-icon-right"></i>
                         </li>
                         <li class="nav-item">
                             <div class="title">纸尿裤</div>
-                            <p><a href="#">纸尿裤</a><a href="#">婴儿湿巾</a></p>
+                            <p><a href="/index/goods/detail?id=200">纸尿裤</a><a href="/index/goods/detail?id=201">婴儿湿巾</a></p>
                             <i class="layui-icon layui-icon-right"></i>
                         </li>
                         <li class="nav-item">
                             <div class="title">洗护用品</div>
-                            <p><a href="#">母婴洗护用品</a><a href="#">孕婴童用品</a></p>
+                            <p><a href="/index/goods/detail?id=301">母婴洗护用品</a><a href="302">孕婴童用品</a></p>
                             <i class="layui-icon layui-icon-right"></i>
                         </li>
                         <li class="nav-item">
                             <div class="title">儿童玩具</div>
-                            <p><a href="#">婴幼玩具</a><a href="#">遥控玩具</a><a href="#">积木拼插</a></p>
+                            <p><a href="/index/goods/detail?id=401">婴幼玩具</a><a href="/index/goods/detail?id=402">遥控玩具</a><a href="/index/goods/detail?id=403">积木拼插</a></p>
                             <i class="layui-icon layui-icon-right"></i>
                         </li>
                         <li class="nav-item">
                             <div class="title">车窗座椅</div>
-                            <p><a href="#">婴儿推车</a><a href="#">儿童安全座骑</a></p>
+                            <p><a href="/index/goods/detail?id=501">婴儿推车</a><a href="/index/goods/detail?id=601">儿童安全座骑</a></p>
                             <i class="layui-icon layui-icon-right"></i>
                         </li>
                         <li class="nav-item">
                             <div class="title">儿童童鞋</div>
-                            <p><a href="#">童装</a><a href="#">童鞋</a><a href="#">婴童内衣及配饰</a></p>
+                            <p><a href="/index/goods/detail?id=601">童装</a><a href="/index/goods/detail?id=602">童鞋</a><a href="/index/goods/detail?id=603">婴童内衣及配饰</a></p>
                             <i class="layui-icon layui-icon-right"></i>
                         </li>
                         <li class="nav-item">
                             <div class="title">儿童图片</div>
-                            <p><a href="#">0-2岁</a><a href="#">早教启蒙</a><a href="#">孕产育儿</a></p>
+                            <p><a href="/index/goods/detail?id=701">0-2岁</a><a href="/index/goods/detail?id=702">早教启蒙</a><a href="/index/goods/detail?id=703">孕产育儿</a></p>
                             <i class="layui-icon layui-icon-right"></i>
                         </li>
                         <li class="nav-item nobor">
                             <div class="title">孕妈专区</div>
-                            <p><a href="#">孕妇装</a><a href="#">背婴带</a><a href="#">母婴服务</a></p>
+                            <p><a href="/index/goods/detail?id=801">孕妇装</a><a href="/index/goods/detail?id=802">背婴带</a><a href="/index/goods/detail?id=803">母婴服务</a></p>
                             <i class="layui-icon layui-icon-right"></i>
                         </li>
                     </ul>
@@ -60,7 +60,7 @@
         </div>
         <div class="category-banner">
             <div class="w1200">
-                <img src="/static/img/banner1.jpg">
+                <img src="//cdn.static.questionfans.com/img/banner1.jpg">
             </div>
         </div>
     </div>
@@ -68,80 +68,40 @@
         <div class="sk">
             <div class="sk_inner w1200">
                 <div class="sk_hd">
-                    <a href="javascript:;">
-                        <img src="/static/img/s_img1.jpg">
+                    <a href="/index/goods/detail?id=1000">
+                        <img src="//cdn.static.questionfans.com/img/s_img1.jpg">
                     </a>
                 </div>
                 <div class="sk_bd">
                     <div class="layui-carousel" id="test1">
                         <div carousel-item>
                             <div class="item-box">
+                                {foreach $goods.recommend as $k=>$v}
+                                {if $k < 4}
                                 <div class="item">
-                                    <a href="javascript:;"><img src="/static/img/s_img2.jpg"></a>
-                                    <div class="title">宝宝五彩袜棉质舒服</div>
+                                    <a href="/index/goods/detail?id={$v.id}"><img src="{$v.img}"></a>
+                                    <div class="title">{$v.title}</div>
                                     <div class="price">
-                                        <span>￥49.00</span>
-                                        <del>￥99.00</del>
+                                        <span>￥{$v.price}</span>
+                                        <del>￥{$v.price*1.2}</del>
                                     </div>
                                 </div>
-                                <div class="item">
-                                    <a href="javascript:;"><img src="/static/img/s_img3.jpg"></a>
-                                    <div class="title">宝宝五彩袜棉质舒服</div>
-                                    <div class="price">
-                                        <span>￥49.00</span>
-                                        <del>￥99.00</del>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <a href="javascript:;"><img src="/static/img/s_img4.jpg"></a>
-                                    <div class="title">宝宝五彩袜棉质舒服</div>
-                                    <div class="price">
-                                        <span>￥49.00</span>
-                                        <del>￥99.00</del>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <a href="javascript:;"><img src="/static/img/s_img5.jpg"></a>
-                                    <div class="title">宝宝五彩袜棉质舒服</div>
-                                    <div class="price">
-                                        <span>￥49.00</span>
-                                        <del>￥99.00</del>
-                                    </div>
-                                </div>
+                                {/if}
+                                {/foreach}
                             </div>
                             <div class="item-box">
+                                {foreach $goods.recommend as $k=>$v}
+                                {if $k > 3 && $k < 8}
                                 <div class="item">
-                                    <a href="javascript:;"><img src="/static/img/s_img2.jpg"></a>
-                                    <div class="title">宝宝五彩袜棉质舒服</div>
+                                    <a href="/index/goods/detail?id={$v.id}"><img src="{$v.img}"></a>
+                                    <div class="title">{$v.title}</div>
                                     <div class="price">
-                                        <span>￥49.00</span>
-                                        <del>￥99.00</del>
+                                        <span>￥{$v.price}</span>
+                                        <del>￥{$v.price*1.2}</del>
                                     </div>
                                 </div>
-                                <div class="item">
-                                    <a href="javascript:;"><img src="/static/img/s_img3.jpg"></a>
-                                    <div class="title">宝宝五彩袜棉质舒服</div>
-                                    <div class="price">
-                                        <span>￥49.00</span>
-                                        <del>￥99.00</del>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <a href="javascript:;"><img src="/static/img/s_img4.jpg"></a>
-                                    <div class="title">宝宝五彩袜棉质舒服</div>
-                                    <div class="price">
-                                        <span>￥49.00</span>
-                                        <del>￥99.00</del>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <a href="javascript:;"><img src="/static/img/s_img5.jpg"></a>
-                                    <div class="title">宝宝五彩袜棉质舒服</div>
-                                    <div class="price">
-                                        <span>￥49.00</span>
-                                        <del>￥99.00</del>
-                                    </div>
-                                </div>
+                                {/if}
+                                {/foreach}
                             </div>
                         </div>
                     </div>
@@ -154,51 +114,45 @@
          <div class="product-item product-item1 layui-clear">
             <div class="left-title">
                 <h4><i>1F</i></h4>
-                <img src="/static/img/icon_gou.png">
+                <img src="//cdn.static.questionfans.com/img/icon_gou.png">
                 <h5>宝宝服饰</h5>
             </div>
             <div class="right-cont">
-                <a href="javascript:;" class="top-img"><img src="/static/img/img12.jpg" alt=""></a>
+                <a href="/index/goods/detail?id=1001" class="top-img"><img src="//cdn.static.questionfans.com/img/tuan_img_banner.jpg" alt="" style="width: 1000px;height: 200px"></a>
                 <div class="img-box">
-                    <a href="javascript:;"><img src="/static/img/s_img7.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img8.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img9.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img10.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img11.jpg"></a>
+                    {foreach $goods.f1 as $k=>$v}
+                    <a href="/index/goods/detail?id={$v.id}"><img src="{$v.img}"></a>
+                    {/foreach}
                 </div>
             </div>
         </div>
         <div class="product-item product-item2 layui-clear">
             <div class="left-title">
                 <h4><i>2F</i></h4>
-                <img src="/static/img/icon_gou.png">
+                <img src="//cdn.static.questionfans.com/img/icon_gou.png">
                 <h5>奶粉辅食</h5>
             </div>
             <div class="right-cont">
-                <a href="javascript:;" class="top-img"><img src="/static/img/img12.jpg" alt=""></a>
+                <a href="/index/goods/detail?id=1002" class="top-img"><img src="//cdn.static.questionfans.com/img/img12.jpg" alt=""></a>
                 <div class="img-box">
-                    <a href="javascript:;"><img src="/static/img/s_img7.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img8.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img9.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img10.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img11.jpg"></a>
+                    {foreach $goods.f2 as $k=>$v}
+                    <a href="/index/goods/detail?id={$v.id}"><img src="{$v.img}"></a>
+                    {/foreach}
                 </div>
             </div>
         </div>
         <div class="product-item product-item3 layui-clear">
             <div class="left-title">
                 <h4><i>3F</i></h4>
-                <img src="/static/img/icon_gou.png">
+                <img src="//cdn.static.questionfans.com/img/icon_gou.png">
                 <h5>宝宝用品</h5>
             </div>
             <div class="right-cont">
-                <a href="javascript:;" class="top-img"><img src="/static/img/img12.jpg" alt=""></a>
+                <a href="/index/goods/detail?id=1003" class="top-img" style="width: 1000px;height: 200px;overflow: hidden;display: inline-block"><img src="//cdn.static.questionfans.com/img/us_banner.jpg" alt=""  style="width: 1000px;margin-top: -130px"></a>
                 <div class="img-box">
-                    <a href="javascript:;"><img src="/static/img/s_img7.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img8.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img9.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img10.jpg"></a>
-                    <a href="javascript:;"><img src="/static/img/s_img11.jpg"></a>
+                    {foreach $goods.f3 as $k=>$v}
+                    <a href="/index/goods/detail?id={$v.id}"><img src="{$v.img}"></a>
+                    {/foreach}
                 </div>
             </div>
         </div>
@@ -208,12 +162,14 @@
         <div class="product-list-cont w1200">
             <h4>更多推荐</h4>
             <div class="product-item-box layui-clear">
-                {foreach $goods as $v}
+                {foreach $goods.recommend as $k=>$v}
+                {if $k > 7}
                 <div class="list-item">
-                    <a href="/index/goods/detail?id={$v.id}"><img src="/static/img/goods/{$v.img}" style="width: 160px;height: 160px" onerror="this.src='/static/img/more1.jpg'"></a>
+                    <a href="/index/goods/detail?id={$v.id}"><img src="{$v.img}" style="width: 160px;height: 160px"></a>
                     <p style="height: 40px;overflow: hidden">{$v.title}{$v.sub_title}</p>
                     <span>￥{$v.price}</span>
                 </div>
+                {/if}
                 {/foreach}
             </div>
         </div>

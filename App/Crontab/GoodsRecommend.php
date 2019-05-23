@@ -31,7 +31,16 @@ class GoodsRecommend extends AbstractCronTask
     // 定时任务处理逻辑
     static function run(\swoole_server $server, $taskId, $fromWorkerId, $flags = null)
     {
-        $goods = Goods::limit(20)->groupBy('title')->orderBy('RAND()')->select() ?: [];
+        $recommend = Goods::limit(28)->where(['cat_id' => ['not in',[3,5,6]]])->groupBy('title')->orderBy('RAND()')->select() ?: [];
+        $f1 = Goods::limit(5)->where(['cat_id' => ['=', 6]])->groupBy('title')->orderBy('RAND()')->select() ?: [];
+        $f2 = Goods::limit(5)->where(['cat_id' => ['=', 5]])->groupBy('title')->orderBy('RAND()')->select() ?: [];
+        $f3 = Goods::limit(5)->where(['cat_id' => ['=', 3]])->groupBy('title')->orderBy('RAND()')->select() ?: [];
+        $goods = [
+            'recommend' => $recommend,
+            'f1' => $f1,
+            'f2' => $f2,
+            'f3' => $f3,
+        ];
         $flags = (new IndexCache())->add($goods);
         if (!$flags) {
             AlarmNotice::send('商品推荐静态化Json写入失败');
