@@ -24,7 +24,7 @@ class WebSocketEvent
         if ($this->customHandShake($request, $response) && $this->secWebsocketAccept($request, $response)) {
             // 接受握手 还需要101状态码以切换状态
             $response->status(101);
-            var_dump('shake success at fd :' . $request->fd);
+            print_r($request->get['uid']);
             $response->end();
             return true;
         }
@@ -46,7 +46,8 @@ class WebSocketEvent
         $connection = $server->connection_info($fd);
 
         // 判断连接是否为 server 主动关闭 参见 https://wiki.swoole.com/wiki/page/p-event/onClose.html
-        $reactorId < 0 ? '主动' : '被动';
+        $type = $reactorId < 0 ? '主动' : '被动'.date('Y-m-d H:i:s');
+        var_dump($type);
     }
 
     /**

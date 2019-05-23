@@ -120,7 +120,7 @@ abstract class ViewController extends Controller
     {
         $this->session(new SessionHandler())->start();
         $user = $this->session()->get('user') ?: [];
-        $this->view->assign(['user' => $user]);
+        $this->assign(['user' => $user]);
         $this->user = $user;
         $this->userId = $user['phone'] ?? '';
         $this->param = $this->request()->getRequestParam();

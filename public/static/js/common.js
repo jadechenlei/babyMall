@@ -24,7 +24,7 @@ var request = {
             callback: false,//请求成功后的回调函数
             showSuccessMsg: true, //是否把返回的消息内容弹出
             callbackAfterShow: true, //是否先弹消息再执行回调,
-            alertTime: 3
+            alertTime: 1
         }, options);
         $.ajax({
             type: config.type,
