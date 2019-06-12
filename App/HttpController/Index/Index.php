@@ -22,4 +22,8 @@ class Index extends ViewController
         $this->getView()->assign(['goods' => $goods]);
         return $this->fetch('index');
     }
+
+    public function test(){
+        //
+    }
 }
