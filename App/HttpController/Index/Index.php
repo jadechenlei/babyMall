@@ -17,6 +17,7 @@ class Index extends ViewController
 {
     public function index()
     {
+        ///测试test
         $goods = (new IndexCache())->find();
         //return $this->dump($goods);
         $this->getView()->assign(['goods' => $goods]);
